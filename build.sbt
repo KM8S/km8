@@ -1,5 +1,8 @@
 ThisBuild / resolvers += Resolver.sonatypeRepo("snapshots")
 
+val base_image_path = sys.env.get("BASE_IMAGE_PATH").getOrElse("openjdk")
+val base_image_version = sys.env.get("BASE_IMAGE_VERSION").getOrElse("8-jre")
+
 lazy val ProjectName = "kafkamate"
 lazy val ProjectOrganization = "csofronia"
 lazy val ProjectVersion = "0.2.0"
@@ -29,7 +32,7 @@ lazy val kafkamate = project
       val artifactTargetPath = s"/app/${artifact.name}"
 
       new Dockerfile {
-        from("openjdk:8-jre")
+        from(s"${base_image_path}:${base_image_version}")
         maintainer("Ciprian Sofronia")
 
         env("KAFKAMATE_ENV", "prod")
